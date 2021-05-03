@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 
 dotenv.config();
 
@@ -19,6 +20,14 @@ app.use('/users', userRoutes);
 app.use('/roles', roleRoutes);
 app.use('/jobs', jobRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+const connection_url = process.env.MONGO_URL;
+console.log(connection_url);
+
+mongoose
+  .connect(connection_url, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() =>
+    app.listen(PORT, () => console.log(`Server Running on Port: ${PORT}`))
+  )
+  .catch((error) => console.log(`${error} did not connect`));
+
+mongoose.set('useFindAndModify', false);
