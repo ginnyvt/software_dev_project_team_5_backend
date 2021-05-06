@@ -53,12 +53,12 @@ router.get(
     }
   }
 );
-app.use(checkJwt)
+
 /**
  *
  */
 router.post(
-  "/updateprofile",
+  "/updateprofile", checkJwt,
   checkPersmissions(ITEM_PERMISSION.UPDATE_USER),
   async (req, res) => {
     try {
