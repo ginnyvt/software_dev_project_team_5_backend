@@ -3,6 +3,7 @@ const router = express.Router();
 const fetch = require("node-fetch");
 const env = require("dotenv");
 env.config();
+const { checkJwt } = require('./helpers/check-jwt');
 const { checkPersmissions } = require("../helpers/permissions");
 const { ITEM_PERMISSION } = require("../itemPermission");
 const { getAccessToken } = require("../helpers/accessToken");
@@ -13,25 +14,21 @@ const { getAccessToken } = require("../helpers/accessToken");
  * It is a public endpoint so no authentication is needed. Anyone can access it.
  */
 
-router.get(
-  "/userprofile",
-  checkPersmissions(ITEM_PERMISSION.PROFILE),
-  async (req, res) => {
-    try {
-      const result = await fetch({
-        url: `https://${process.env.AUTH0_DOMAIN}/api/v2/userInfo`,
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${getAccessToken}`,
-        },
-      });
-      res.status(200).json(result);
-    } catch (err) {
-      res.status(500).send(err.message);
-    }
+router.get("/userprofile", async (req, res) => {
+  try {
+    const result = await fetch({
+      url: `https://${process.env.AUTH0_DOMAIN}/api/v2/userInfo`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${getAccessToken}`,
+      },
+    });
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send(err.message);
   }
-);
+});
 
 /**
  * Get a users details including meta-data
@@ -39,7 +36,7 @@ router.get(
  */
 router.get(
   "/user",
-  checkPermissions(ITEM_PERMISSION.READ_USER),
+
   async (req, res) => {
     try {
       const result = await fetch({
@@ -56,7 +53,7 @@ router.get(
     }
   }
 );
-
+app.use(checkJwt)
 /**
  *
  */

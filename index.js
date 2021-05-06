@@ -14,12 +14,12 @@ const app = express();
 const userRoutes = require('./routes/users');
 const roleRoutes = require('./routes/roles');
 const jobRoutes = require('./routes/jobs');
-const { checkJwt } = require('./helpers/check-jwt');
+
 
 app.use(cors());
 app.use(express.json());
 
-app.use(checkJwt)
+
 app.use('/users', userRoutes);
 app.use('/roles', roleRoutes);
 app.use('/jobs', jobRoutes);
