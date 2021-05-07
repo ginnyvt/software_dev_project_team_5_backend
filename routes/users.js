@@ -40,6 +40,8 @@ router.get(
   '/:user_id',
 
   async (req, res) => {
+    const { user_id } = req.params;
+    console.log(user_id);
     try {
       const result = await fetch({
         url: `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${user_id}`,
