@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
 const env = require('dotenv');
+const axios = require('axios');
 env.config();
 const { checkJwt } = require('../helpers/check-jwt');
 const { checkPermissions } = require('../helpers/permissions');
@@ -41,18 +42,22 @@ router.get(
 
   async (req, res) => {
     const { user_id } = req.params;
-    console.log(user_id);
+
+    const token = await getAccessToken();
+
     try {
-      const result = await fetch({
+      const { data } = await axios({
         url: `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${user_id}`,
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          authorization: `Bearer ${getAccessToken}`,
+          authorization: `Bearer ${token}`,
         },
       });
-      res.status(200).json(result);
+      // console.log(result);
+      res.status(200).json(data);
     } catch (err) {
+      console.log(err);
       res.status(500).send(err.message);
     }
   }
@@ -66,8 +71,9 @@ router.post(
   checkJwt,
   checkPermissions(ITEM_PERMISSION.UPDATE_USER),
   async (req, res) => {
+    const user_id = req.user.sub;
     try {
-      const result = await fetch({
+      const result = await axios({
         url: `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${user_id}`,
         method: 'PATCH',
         headers: {
