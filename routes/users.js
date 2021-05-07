@@ -1,12 +1,12 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const fetch = require("node-fetch");
-const env = require("dotenv");
+const fetch = require('node-fetch');
+const env = require('dotenv');
 env.config();
-const { checkJwt } = require('./helpers/check-jwt');
-const { checkPersmissions } = require("../helpers/permissions");
-const { ITEM_PERMISSION } = require("../itemPermission");
-const { getAccessToken } = require("../helpers/accessToken");
+const { checkJwt } = require('../helpers/check-jwt');
+const { checkPermissions } = require('../helpers/permissions');
+const { ITEM_PERMISSION } = require('../itemPermission');
+const { getAccessToken } = require('../helpers/accessToken');
 
 /**
  * Get a user profile
@@ -14,13 +14,15 @@ const { getAccessToken } = require("../helpers/accessToken");
  * It is a public endpoint so no authentication is needed. Anyone can access it.
  */
 
-router.get("/userprofile", async (req, res) => {
+// console.log(checkJwt);
+
+router.get('/userprofile', async (req, res) => {
   try {
     const result = await fetch({
       url: `https://${process.env.AUTH0_DOMAIN}/api/v2/userInfo`,
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         authorization: `Bearer ${getAccessToken}`,
       },
     });
@@ -35,15 +37,15 @@ router.get("/userprofile", async (req, res) => {
  * This endpoint is used to retrieve a user details.
  */
 router.get(
-  "/user",
+  '/user',
 
   async (req, res) => {
     try {
       const result = await fetch({
         url: `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${user_id}`,
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           authorization: `Bearer ${getAccessToken}`,
         },
       });
@@ -58,15 +60,16 @@ router.get(
  *
  */
 router.post(
-  "/updateprofile", checkJwt,
-  checkPersmissions(ITEM_PERMISSION.UPDATE_USER),
+  '/updateprofile',
+  checkJwt,
+  checkPermissions(ITEM_PERMISSION.UPDATE_USER),
   async (req, res) => {
     try {
       const result = await fetch({
         url: `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${user_id}`,
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           given_name: req.body.firstname,

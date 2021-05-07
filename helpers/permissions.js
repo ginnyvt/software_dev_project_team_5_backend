@@ -1,9 +1,9 @@
-const jwtAuthz = require("express-jwt-authz");
+const jwtAuthz = require('express-jwt-authz');
 
 exports.checkPermissions = (permissions) => {
-    return jwtAuthz([permissions], {
-      customScopeKey: "permissions",
-      checkAllScopes: true,
-      failWithError: true
-    });
-  };
+  return jwtAuthz([permissions], {
+    customScopeKey: 'permissions',
+    checkAllScopes: true,
+    failWithError: true,
+  });
+};

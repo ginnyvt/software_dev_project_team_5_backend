@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
 dotenv.config();
 
@@ -14,24 +14,27 @@ const app = express();
 
 // Import routers
 const userRoutes = require('./routes/users');
-const roleRoutes = require('./routes/roles');
+// const roleRoutes = require('./routes/roles');
 const jobRoutes = require('./routes/jobs');
 
 app.use(cors());
 app.use(express.json());
 
 app.use('/users', userRoutes);
-app.use('/roles', roleRoutes);
+// app.use('/roles', roleRoutes);
 app.use('/jobs', jobRoutes);
 
-const connection_url = process.env.MONGO_URL;
-// console.log(connection_url);
+// const connection_url = process.env.MONGO_URL;
 
-mongoose
-  .connect(connection_url, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() =>
-    app.listen(PORT, () => console.log(`Server Running on Port: ${PORT}`))
-  )
-  .catch((error) => console.log(`${error} did not connect`));
+// mongoose
+//   .connect(connection_url, { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() =>
+//     app.listen(PORT, () => console.log(`Server Running on Port: ${PORT}`))
+//   )
+//   .catch((error) => console.log(`${error} did not connect`));
 
-mongoose.set('useFindAndModify', false);
+// mongoose.set('useFindAndModify', false);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port: ${PORT}`);
+});
