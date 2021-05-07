@@ -37,7 +37,7 @@ router.get('/userprofile', async (req, res) => {
  * This endpoint is used to retrieve a user details.
  */
 router.get(
-  '/user',
+  '/:user_id',
 
   async (req, res) => {
     try {
