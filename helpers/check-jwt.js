@@ -2,6 +2,7 @@ const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 
 const domain = process.env.AUTH0_DOMAIN;
+const audience = process.env.AUTH0_AUDIENCE;
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
@@ -11,7 +12,7 @@ const checkJwt = jwt({
     jwksUri: `https://${domain}/.well-known/jwks.json`,
   }),
 
-  audience: `https://${process.env.AUTH0_DOMAIN}/api/v2`,
+  audience: audience,
   issuer: `https://${domain}/`,
   algorithms: ['RS256'],
 });

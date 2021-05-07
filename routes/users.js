@@ -66,32 +66,59 @@ router.get(
 /**
  *
  */
-router.post(
+router.patch(
   '/updateprofile',
   checkJwt,
-  checkPermissions(ITEM_PERMISSION.UPDATE_USER),
+  // checkPermissions(ITEM_PERMISSION.UPDATE_USER),
   async (req, res) => {
     const user_id = req.user.sub;
+
+    let userData = {};
+    let given_name;
+    let family_name;
+
+    if (req.body.given_name !== '') {
+      given_name = req.body.given_name;
+    }
+
+    if (req.body.given_name !== '') {
+      family_name = req.body.family_name;
+    }
+
+    if (req.body.company !== '') {
+      userData.company = req.body.company;
+    }
+    if (req.body.title !== '') {
+      userData.title = req.body.title;
+    }
+    if (req.body.contact_number !== '') {
+      userData.contact_number = req.body.contact_number;
+    }
+
+    if (req.body.bio !== '') {
+      userData.bio = req.body.bio;
+    }
+
+    // console.log(userData)
     try {
-      const result = await axios({
+      const token = await getAccessToken();
+      const { data } = await axios({
         url: `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${user_id}`,
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          given_name: req.body.firstname,
-          family_name: req.body.lastname,
-          user_metadata: {
-            company: req.body.company,
-            title: req.body.title,
-            contact_number: req.body.contact_number,
-            bio: req.body.bio,
-          },
-        }),
+        data: {
+          given_name: given_name,
+          family_name: family_name,
+          user_metadata: userData,
+        },
       });
-      res.status(200).json(result);
+      console.log(data);
+      res.status(200).json(data);
     } catch (err) {
+      console.log(err);
       res.sendStatus(500).send(err.message);
     }
   }
