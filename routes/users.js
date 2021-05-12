@@ -88,9 +88,15 @@ router.patch(
     if (req.body.company !== '') {
       userData.company = req.body.company;
     }
+
+    if (req.body.location !== '') {
+      userData.location = req.body.location;
+    }
+
     if (req.body.title !== '') {
       userData.title = req.body.title;
     }
+
     if (req.body.contact_number !== '') {
       userData.contact_number = req.body.contact_number;
     }
