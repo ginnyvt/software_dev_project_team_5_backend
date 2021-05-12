@@ -81,7 +81,7 @@ router.patch(
       given_name = req.body.given_name;
     }
 
-    if (req.body.given_name !== '') {
+    if (req.body.family_name !== '') {
       family_name = req.body.family_name;
     }
 
