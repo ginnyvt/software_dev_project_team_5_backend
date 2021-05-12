@@ -105,6 +105,10 @@ router.patch(
       userData.bio = req.body.bio;
     }
 
+    if (req.body.isEmployer !== '') {
+      userData.isEmployer = req.body.isEmployer;
+    }
+
     // console.log(userData)
     try {
       const token = await getAccessToken();
