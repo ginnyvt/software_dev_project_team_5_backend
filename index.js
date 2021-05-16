@@ -14,14 +14,14 @@ const app = express();
 
 // Import routers
 const userRoutes = require('./routes/users');
-// const roleRoutes = require('./routes/roles');
+const roleRoutes = require('./routes/roles');
 const jobRoutes = require('./routes/jobs');
 
 app.use(cors());
 app.use(express.json());
 
 app.use('/users', userRoutes);
-// app.use('/roles', roleRoutes);
+app.use('/roles', roleRoutes);
 app.use('/jobs', jobRoutes);
 
 // const connection_url = process.env.MONGO_URL;
