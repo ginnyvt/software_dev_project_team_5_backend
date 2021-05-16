@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { checkJwt } = require('../helpers/check-jwt');
-const { checkRoles } = require('../helpers/checkRoles');
 const { getAccessToken } = require('../helpers/accessToken');
 const axios = require('axios');
 
