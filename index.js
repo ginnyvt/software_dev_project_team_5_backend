@@ -13,25 +13,25 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 // mongoose connection
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.set("useFindAndModify", false);
+mongoose.set('useFindAndModify', false);
 const db_host = process.env.DB_HOST;
 
 mongoose
   .connect(db_host, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    console.log("Connected to MongoDB.");
+    console.log('Connected to MongoDB.');
   })
   .catch((err) => {
-    console.log("Connection error", err);
+    console.log('Connection error', err);
     process.exit();
   });
-
 
 // Import routers
 const userRoutes = require('./routes/users');
 const jobRoutes = require('./routes/jobs');
+const roleRoutes = require('./routes/roles');
 
 app.use(cors());
 app.use(express.json());
@@ -39,7 +39,6 @@ app.use(express.json());
 app.use('/users', userRoutes);
 app.use('/roles', roleRoutes);
 app.use('/jobs', jobRoutes);
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);

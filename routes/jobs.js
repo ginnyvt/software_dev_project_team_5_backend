@@ -1,14 +1,16 @@
-const Job = require("./models/job.model");
+const express = require('express');
+const router = express.Router();
+const Job = require('../models/job.model');
 
 /**
  * Endpoint for getting all jobs posted by employers from the database
  * This endpoint gets all jobs contained in the JOB DATABASE
  */
-router.get("/getalljobs", async (req, res) => {
+router.get('/getalljobs', async (req, res) => {
   try {
     const result = await Job.find({}).lean();
     if (!result.length) {
-      res.status(404).send({ message: "DATABASE IS EMPTY" });
+      res.status(404).send({ message: 'DATABASE IS EMPTY' });
     } else {
       res.status(200).send(result);
     }
@@ -22,15 +24,15 @@ router.get("/getalljobs", async (req, res) => {
  * This endpoint gets a job from the database using the company name
  */
 
-router.get("/getonejob", async (req, res) => {
+router.get('/getonejob', async (req, res) => {
   try {
     const id = req.body.id;
     if (!id) {
-      res.status(400).send({ message: "ID NOT FOUND" });
+      res.status(400).send({ message: 'ID NOT FOUND' });
     } else {
       const result = await Job.findById(id).lean();
       if (!result) {
-        res.status(404).send({ message: "JOB NOT FOUND" });
+        res.status(404).send({ message: 'JOB NOT FOUND' });
       } else {
         res.status(200).send(result);
       }
@@ -45,7 +47,7 @@ router.get("/getonejob", async (req, res) => {
  * This endpoint creates a new job into the database
  */
 
-router.post("/insertjob/", async (req, res) => {
+router.post('/insertjob/', async (req, res) => {
   try {
     const someJob = new Job({
       company: req.body.company,
@@ -59,7 +61,7 @@ router.post("/insertjob/", async (req, res) => {
       image: req.body.image,
     });
     await Job.create(someJob);
-    res.status(201).send({ message: "JOB CREATED" });
+    res.status(201).send({ message: 'JOB CREATED' });
   } catch (err) {
     res.status(500).send(err.message);
   }
@@ -71,17 +73,17 @@ router.post("/insertjob/", async (req, res) => {
  * for the job matching the id, deletes and returns the result
  */
 
-router.delete("/deletejob/", async (req, res) => {
+router.delete('/deletejob/', async (req, res) => {
   try {
     const id = req.body.id;
     if (!id) {
-      res.status(400).send({ message: "ID NOT FOUND" });
+      res.status(400).send({ message: 'ID NOT FOUND' });
     } else {
       const result = await Job.findByIdAndDelete(id);
       if (result) {
-        res.status(200).send({ message: "JOB DELETED" });
+        res.status(200).send({ message: 'JOB DELETED' });
       } else {
-        res.status(404).send({ message: "JOB NOT DELETED" });
+        res.status(404).send({ message: 'JOB NOT DELETED' });
       }
     }
   } catch (err) {
@@ -94,7 +96,7 @@ router.delete("/deletejob/", async (req, res) => {
  * This endpoint updates an existing job from the database
  */
 
-router.put("/updatejob/", async (req, res) => {
+router.put('/updatejob/', async (req, res) => {
   try {
     const id = req.body.id;
     const someJobUpdate = {
@@ -110,13 +112,13 @@ router.put("/updatejob/", async (req, res) => {
     };
 
     if (!id || !someJobUpdate) {
-      res.status(400).send({ message: "missing parameter" });
+      res.status(400).send({ message: 'missing parameter' });
     } else {
       const result = await Job.findByIdAndUpdate(id, { $set: someJobUpdate });
       if (!result) {
-        res.status(404).send({ message: "JOB NOT UPDATED" });
+        res.status(404).send({ message: 'JOB NOT UPDATED' });
       } else {
-        res.status(200).send({ message: "JOB UPDATED" });
+        res.status(200).send({ message: 'JOB UPDATED' });
         2;
       }
     }
