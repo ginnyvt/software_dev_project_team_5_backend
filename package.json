@@ -28,6 +28,6 @@
     "express-jwt-authz": "^2.4.1",
     "jwks-rsa": "^2.0.2",
     "mongoose": "^5.12.10",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.7"
   }
 }
